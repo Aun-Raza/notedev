@@ -8,20 +8,18 @@ import {
   Link,
   Button,
 } from '@nextui-org/react';
-import Image from 'next/image';
 import React from 'react';
-import nextImage from '@/public/vercel.svg';
 
 const NavBar = () => {
   return (
     <NavbarNextUI position='static'>
-      <NavbarBrand>
+      <NavbarBrand as={Link} href='/'>
         {/* <Image src={''} height={200} width={200} alt='next image' /> */}
         <p className='text-2xl font-semibold font-mono'>NoteDev</p>
       </NavbarBrand>
       <NavbarContent className='hidden sm:flex gap-4' justify='center'>
         <NavbarItem>
-          <Link color='foreground' href='#'>
+          <Link color='foreground' href='/dashboard'>
             Dashboard
           </Link>
         </NavbarItem>
@@ -38,7 +36,12 @@ const NavBar = () => {
       </NavbarContent>
       <NavbarContent justify='end'>
         <NavbarItem>
-          <Button as={Link} color='primary' href='#' variant='flat'>
+          <Button as={Link} color='primary' href='/login' variant='flat'>
+            Login
+          </Button>
+        </NavbarItem>
+        <NavbarItem>
+          <Button as={Link} color='primary' href='/signup' variant='flat'>
             Sign Up
           </Button>
         </NavbarItem>
