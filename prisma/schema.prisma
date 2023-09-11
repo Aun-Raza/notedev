@@ -1,0 +1,25 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url = env("DATABASE_URL")
+}
+
+model User {
+    id String @id @default(uuid())
+    username String
+    password String
+    notesOwned Note[] @relation("NoteOwner")
+}
+
+model Note {
+    id String @id @default(uuid())
+    title String
+    text String
+    ownerId String
+    owner User @relation("NoteOwner", fields: [ownerId], references: [id])
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+}
