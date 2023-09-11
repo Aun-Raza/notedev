@@ -4,7 +4,9 @@ import _ from 'lodash';
 
 export const GET = async (request: Request) => {
   try {
-    const allUsers = await prisma.user.findMany({});
+    const allUsers = await prisma.user.findMany({
+      include: { notesOwned: true },
+    });
     return new Response(JSON.stringify(allUsers), {
       status: 200,
     });
