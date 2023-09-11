@@ -1,20 +1,32 @@
 'use client';
 
+import { useDebounce } from '@/hook/useDebounce';
 import { MockNotes, Note } from '@/types';
 import { Button, Card, CardBody, CardHeader, Input } from '@nextui-org/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Dashboard = () => {
   const [notes, setNotes] = useState<Note[]>(MockNotes);
+  const [updatedNote, setUpdatedNote] = useState<Note | null>(null);
+  const debouncedNote = useDebounce(updatedNote, 2000);
 
   function handleNoteChange(id: string, title: string, text: string) {
     const notesClone = [...notes];
     const foundNote = notesClone.find((note) => note.id === id);
     if (!foundNote) return;
+
     foundNote.title = title;
     foundNote.text = text;
+    const updated = { ...foundNote, title, text };
     setNotes(notesClone);
+    setUpdatedNote(updated);
   }
+
+  useEffect(() => {
+    if (debouncedNote) {
+      console.log(debouncedNote, 'debounced');
+    }
+  }, [debouncedNote]);
 
   return (
     <div className='mt-4 container mx-auto'>
