@@ -16,7 +16,7 @@ const LoginSignUp = ({ submitType, onFormSubmit }: ISubmitType) => {
         ev.preventDefault();
         onFormSubmit(username, password);
       }}
-      className='mt-4 container mx-auto'
+      className='mt-4 container mx-auto max-w-lg border bg-white rounded-lg'
     >
       <div className='p-5 flex flex-col gap-3'>
         <Input
@@ -35,7 +35,7 @@ const LoginSignUp = ({ submitType, onFormSubmit }: ISubmitType) => {
           placeholder='Enter your password'
         />
         <Button type='submit' color='primary'>
-          {submitType === 'Login' ? 'Login' : 'Register'}
+          {submitType === 'Login' ? 'Login' : 'Sign Up'}
         </Button>
       </div>
     </form>

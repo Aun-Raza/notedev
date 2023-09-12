@@ -24,8 +24,8 @@ const NavBar = () => {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color='foreground' href='#'>
-            Features
+          <Link color='foreground' href='/about'>
+            About
           </Link>
         </NavbarItem>
         <NavbarItem>

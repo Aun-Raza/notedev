@@ -1,20 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { getDataFromToken } from '@/middleware/auth';
+import { User } from '@/types';
 const prisma = new PrismaClient();
 
 export const POST = async (request: NextRequest) => {
   try {
-    const { userId, title, text } = await request.json();
-    if (!userId || !title || !text)
-      return new NextResponse('Missing either userId, title or text', {
+    const { id } = getDataFromToken(request) as User;
+    const { title, text } = await request.json();
+    if (!title || !text)
+      return NextResponse.json('Missing title or text', {
         status: 400,
       });
 
     const newNote = await prisma.note.create({
-      data: { ownerId: userId, title, text },
+      data: { ownerId: id, title, text },
     });
-    return new NextResponse(JSON.stringify(newNote), { status: 200 });
+    return NextResponse.json(newNote, { status: 200 });
   } catch (error) {
-    return new NextResponse('Failed to post new note', { status: 500 });
+    return NextResponse.json('Failed to post new note', { status: 500 });
   }
 };

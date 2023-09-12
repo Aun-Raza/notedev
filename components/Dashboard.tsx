@@ -25,7 +25,6 @@ const Dashboard = () => {
     const { data } = await axios.post<Note>(
       'http://localhost:3000/api/note/new',
       {
-        userId: '5cf1a4f2-37cb-4a1a-a6a3-f0295a95bc97',
         title: ' ',
         text: ' ',
       }
