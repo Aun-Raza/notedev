@@ -7,10 +7,31 @@ import {
   NavbarItem,
   Link,
   Button,
+  Avatar,
 } from '@nextui-org/react';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { resetUser, setUser } from '@/redux/feature';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '@/redux/store';
+import axios from 'axios';
+import Cookie from 'js-cookie';
+import jwtDecode from 'jwt-decode';
+import { User } from '@/types';
+import { useRouter } from 'next/navigation';
 
 const NavBar = () => {
+  const username = useAppSelector((state) => state.userReducer.value.username);
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = Cookie.get('token');
+    if (token) {
+      const decodedToken = jwtDecode(token) as User;
+      dispatch(setUser(decodedToken));
+    }
+  }, []);
+
   return (
     <NavbarNextUI position='static'>
       <NavbarBrand as={Link} href='/'>
@@ -34,18 +55,40 @@ const NavBar = () => {
           </Link>
         </NavbarItem>
       </NavbarContent>
-      <NavbarContent justify='end'>
-        <NavbarItem>
-          <Button as={Link} color='primary' href='/login' variant='flat'>
-            Login
-          </Button>
-        </NavbarItem>
-        <NavbarItem>
-          <Button as={Link} color='primary' href='/signup' variant='flat'>
-            Sign Up
-          </Button>
-        </NavbarItem>
-      </NavbarContent>
+      {!username && (
+        <NavbarContent justify='end'>
+          <NavbarItem>
+            <Button as={Link} color='primary' href='/login' variant='flat'>
+              Login
+            </Button>
+          </NavbarItem>
+          <NavbarItem>
+            <Button as={Link} color='primary' href='/signup' variant='flat'>
+              Sign Up
+            </Button>
+          </NavbarItem>
+        </NavbarContent>
+      )}
+      {username && (
+        <NavbarContent justify='end'>
+          <NavbarItem>
+            <Button
+              color='primary'
+              variant='flat'
+              onClick={async () => {
+                await axios.post('http://localhost:3000/api/user/logout');
+                dispatch(resetUser());
+                router.push('/login');
+              }}
+            >
+              Logout
+            </Button>
+          </NavbarItem>
+          <NavbarItem>
+            <Avatar name={username} />
+          </NavbarItem>
+        </NavbarContent>
+      )}
     </NavbarNextUI>
   );
 };
