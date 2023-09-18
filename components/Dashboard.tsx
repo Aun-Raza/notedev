@@ -13,22 +13,17 @@ const Dashboard = () => {
   const debouncedNote = useDebounce(updatedNote, 1000);
 
   async function deleteNote(id: string) {
-    const { data } = await axios.delete<Note>(
-      `http://localhost:3000/api/note/${id}`
-    );
+    const { data } = await axios.delete<Note>(`/api/note/${id}`);
 
     const notesClone = notes.filter((note) => note.id !== data.id);
     setNotes(notesClone);
   }
 
   async function addNote() {
-    const { data } = await axios.post<Note>(
-      'http://localhost:3000/api/note/new',
-      {
-        title: ' ',
-        text: ' ',
-      }
-    );
+    const { data } = await axios.post<Note>('/api/note/new', {
+      title: ' ',
+      text: ' ',
+    });
     const notesClone = [...notes];
     notesClone.unshift(data);
     setNotes(notesClone);
@@ -50,7 +45,7 @@ const Dashboard = () => {
   useEffect(() => {
     async function updateNote(updatedNote: Note) {
       const { id, title, text } = updatedNote;
-      await axios.put(`http://localhost:3000/api/note/${id}`, { title, text });
+      await axios.put(`/api/note/${id}`, { title, text });
     }
 
     if (debouncedNote) {
@@ -60,9 +55,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     async function fetchNotes() {
-      const { data } = await axios.get<Note[]>(
-        'http://localhost:3000/api/note'
-      );
+      const { data } = await axios.get<Note[]>('/api/note');
       setNotes(data);
     }
     fetchNotes();

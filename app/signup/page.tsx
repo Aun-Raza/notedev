@@ -12,17 +12,12 @@ const SignUpPage = () => {
   const router = useRouter();
 
   async function handleRegister(username: string, password: string) {
-    try {
-      const { data: user } = await axios.post<User>(
-        'http://localhost:3000/api/user/register',
-        { username, password }
-      );
-      dispatch(setUser({ id: user.id, username }));
-      router.push('/');
-    } catch (e) {
-      const error = e as AxiosError;
-      console.log(error.message);
-    }
+    const { data: user } = await axios.post<User>('/api/user/register', {
+      username,
+      password,
+    });
+    dispatch(setUser({ id: user.id, username }));
+    router.push('/');
   }
 
   return <LoginSignUp submitType='Sign Up' onFormSubmit={handleRegister} />;

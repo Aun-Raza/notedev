@@ -12,17 +12,12 @@ const LoginPage = () => {
   const router = useRouter();
 
   async function handleLogin(username: string, password: string) {
-    try {
-      const { data: user } = await axios.post<User>(
-        'http://localhost:3000/api/user/login',
-        { username, password }
-      );
-      dispatch(setUser({ id: user.id, username }));
-      router.push('/');
-    } catch (e) {
-      const error = e as AxiosError;
-      console.log(error.message);
-    }
+    const { data: user } = await axios.post<User>('/api/user/login', {
+      username,
+      password,
+    });
+    dispatch(setUser({ id: user.id, username }));
+    router.push('/');
   }
 
   return <LoginSignUp submitType='Login' onFormSubmit={handleLogin} />;

@@ -9,28 +9,17 @@ import {
   Button,
   Avatar,
 } from '@nextui-org/react';
-import React, { useEffect } from 'react';
-import { resetUser, setUser } from '@/redux/feature';
+import React from 'react';
+import { resetUser } from '@/redux/feature';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/redux/store';
 import axios from 'axios';
-import Cookie from 'js-cookie';
-import jwtDecode from 'jwt-decode';
-import { User } from '@/types';
 import { useRouter } from 'next/navigation';
 
 const NavBar = () => {
   const username = useAppSelector((state) => state.userReducer.value.username);
   const dispatch = useDispatch();
   const router = useRouter();
-
-  useEffect(() => {
-    const token = Cookie.get('token');
-    if (token) {
-      const decodedToken = jwtDecode(token) as User;
-      dispatch(setUser(decodedToken));
-    }
-  }, []);
 
   return (
     <NavbarNextUI position='static'>
@@ -76,7 +65,7 @@ const NavBar = () => {
               color='primary'
               variant='flat'
               onClick={async () => {
-                await axios.post('http://localhost:3000/api/user/logout');
+                await axios.post('/api/user/logout');
                 dispatch(resetUser());
                 router.push('/login');
               }}

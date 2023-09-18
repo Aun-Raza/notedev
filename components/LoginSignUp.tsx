@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Input } from '@nextui-org/react';
+import { AxiosError } from 'axios';
 
 interface ISubmitType {
   onFormSubmit: (username: string, password: string) => void;
@@ -9,12 +10,18 @@ interface ISubmitType {
 const LoginSignUp = ({ submitType, onFormSubmit }: ISubmitType) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   return (
     <form
-      onSubmit={(ev) => {
-        ev.preventDefault();
-        onFormSubmit(username, password);
+      onSubmit={async (ev) => {
+        try {
+          ev.preventDefault();
+          setErrorMessage('');
+          await onFormSubmit(username, password);
+        } catch (e) {
+          setErrorMessage('Invalid username or password');
+        }
       }}
       className='mt-4 container mx-auto max-w-lg border bg-white rounded-lg'
     >
@@ -34,6 +41,7 @@ const LoginSignUp = ({ submitType, onFormSubmit }: ISubmitType) => {
           onChange={(ev) => setPassword(ev.target.value)}
           placeholder='Enter your password'
         />
+        {errorMessage && <div className='text-red-400'>{errorMessage}</div>}
         <Button type='submit' color='primary'>
           {submitType === 'Login' ? 'Login' : 'Sign Up'}
         </Button>

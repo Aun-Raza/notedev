@@ -22,5 +22,19 @@ export const userSlice = createSlice({
   },
 });
 
+export const darkModeSlice = createSlice({
+  name: 'darkMode',
+  initialState,
+  reducers: {
+    setUser: (state, action: PayloadAction<User>) => ({
+      value: {
+        id: action.payload.id,
+        username: action.payload.username,
+      },
+    }),
+    resetUser: () => initialState,
+  },
+});
+
 export const { setUser, resetUser } = userSlice.actions;
 export default userSlice.reducer;
