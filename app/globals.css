@@ -3,27 +3,46 @@
 @tailwind utilities;
 
 :root {
+  --color-primary: #5b0888;
+  --color-secondary: #713abe;
+  --color-tertiary: #9d76c1;
+  --color-background: #e5cff7;
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --color-primary: #5b0888;
+    --color-secondary: #713abe;
+    --color-tertiary: #9d76c1;
+    --color-background: #e5cff7;
+    --foreground-rgb: 0, 0, 0;
   }
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: var(--color-background);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-input {
+  position: relative;
+}
+
+.search-input::after {
+  content: '';
+  width: 20px;
+  height: 20px; /* Define a height */
+  background-image: url('/magnifying-glass-solid.svg');
+  background-repeat: no-repeat;
+  background-size: 20px;
+  position: absolute;
+  right: 15px; /* Maybe some padding from the right */
+  top: 50%; /* To vertically center the image */
+  transform: translateY(-50%); /* To vertically center the image */
 }
 
 input:-webkit-autofill,

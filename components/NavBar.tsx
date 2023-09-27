@@ -15,6 +15,8 @@ import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/redux/store';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faNoteSticky } from '@fortawesome/free-solid-svg-icons';
 
 const NavBar = () => {
   const username = useAppSelector((state) => state.userReducer.value.username);
@@ -22,37 +24,36 @@ const NavBar = () => {
   const router = useRouter();
 
   return (
-    <NavbarNextUI position='static'>
+    <NavbarNextUI className='bg-secondary text-white' position='static'>
       <NavbarBrand as={Link} href='/'>
-        {/* <Image src={''} height={200} width={200} alt='next image' /> */}
-        <p className='text-2xl font-semibold font-mono'>NoteDev</p>
+        <p className='text-3xl font-semibold text-white font-mono '>
+          Note
+          <FontAwesomeIcon className='px-1' color='white' icon={faNoteSticky} />
+          Dev
+        </p>
       </NavbarBrand>
-      <NavbarContent className='hidden sm:flex gap-4' justify='center'>
-        <NavbarItem>
-          <Link color='foreground' href='/dashboard'>
-            Dashboard
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color='foreground' href='/about'>
-            About
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color='foreground' href='#'>
-            Profile
-          </Link>
-        </NavbarItem>
-      </NavbarContent>
+
       {!username && (
         <NavbarContent justify='end'>
           <NavbarItem>
-            <Button as={Link} color='primary' href='/login' variant='flat'>
+            <Button
+              as={Link}
+              color='default'
+              className='text-white'
+              href='/login'
+              variant='flat'
+            >
               Login
             </Button>
           </NavbarItem>
           <NavbarItem>
-            <Button as={Link} color='primary' href='/signup' variant='flat'>
+            <Button
+              as={Link}
+              color='default'
+              className='text-white'
+              href='/signup'
+              variant='flat'
+            >
               Sign Up
             </Button>
           </NavbarItem>
@@ -61,8 +62,17 @@ const NavBar = () => {
       {username && (
         <NavbarContent justify='end'>
           <NavbarItem>
+            <Avatar
+              as={Link}
+              href='/profile'
+              className='text-xl'
+              name={username.substring(0, 1).toUpperCase()}
+            />
+          </NavbarItem>
+          <NavbarItem>
             <Button
-              color='primary'
+              color='default'
+              className='text-white'
               variant='flat'
               onClick={async () => {
                 await axios.post('/api/user/logout');
@@ -72,9 +82,6 @@ const NavBar = () => {
             >
               Logout
             </Button>
-          </NavbarItem>
-          <NavbarItem>
-            <Avatar name={username} />
           </NavbarItem>
         </NavbarContent>
       )}
